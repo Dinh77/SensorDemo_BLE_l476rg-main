@@ -68,7 +68,7 @@ void Set_DeviceConnectable(void)
     13,0xFF,0x01, /* SKD version */
     0x02,
     0x00,
-    0xF4, /* ACC+Gyro+Mag 0xE0 | 0x04 Temp | 0x10 Pressure */
+	0xFC, /* ACC+Gyro+Mag 0xE0 | 0x04 (Temp) | 0x08 (Humidity) | 0x10 (Pressure) = 0xFC */
     0x00, /*  */
     0x00, /*  */
     bdaddr[5], /* BLE MAC start -MSB first- */

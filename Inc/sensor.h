@@ -21,7 +21,7 @@
 #include <stdint.h>
 
 /* Exported defines ----------------------------------------------------------*/
-#define SENSOR_DEMO_NAME   'B','l','u','e','N','R','G'
+#define SENSOR_DEMO_NAME   'D','i','n','h','N','R','G'
 #define BDADDR_SIZE        6
 
 /* Exported function prototypes ----------------------------------------------*/

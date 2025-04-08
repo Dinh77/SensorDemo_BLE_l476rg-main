@@ -398,6 +398,8 @@ static void User_Process(void)
       float temp = Read_Temperature_LPS22HH();
       float press = Read_Pressure_LPS22HH();
       float hum = Read_Humidity_HTS221();
+      printf("Température (°C): %.2f | Pression (hPa): %.2f | Humidité (%%): %.2f\r\n", temp, press, hum);
+
       Environmental_Update((int32_t)(press * 100), (int16_t)(temp * 10), (int16_t)(hum * 10));
 
 
@@ -592,10 +594,12 @@ void aci_gatt_read_permit_req_event(uint16_t Connection_Handle,
 }
 
 void Sensor_Init(void) {
+
     hts221_ctx.write_reg = hts221_platform_write;
     hts221_ctx.read_reg = hts221_platform_read;
     hts221_ctx.mdelay = HAL_Delay;
     hts221_ctx.handle = &hi2c1;
+
 
     lps22hh_ctx.write_reg = lps22hh_platform_write;
     lps22hh_ctx.read_reg = lps22hh_platform_read;
@@ -603,6 +607,18 @@ void Sensor_Init(void) {
     lps22hh_ctx.handle = &hi2c1;
 
 
+    hts221_power_on_set(&hts221_ctx, PROPERTY_ENABLE);
+    hts221_block_data_update_set(&hts221_ctx, PROPERTY_ENABLE);
+    hts221_data_rate_set(&hts221_ctx, HTS221_ODR_1Hz);
+
+
+    lps22hh_reset_set(&lps22hh_ctx, PROPERTY_ENABLE);
+    do {
+        lps22hh_reset_get(&lps22hh_ctx, &lps22hh_rst);
+    } while (lps22hh_rst);
+
+    lps22hh_block_data_update_set(&lps22hh_ctx, PROPERTY_ENABLE);
+    lps22hh_data_rate_set(&lps22hh_ctx, LPS22HH_10_Hz_LOW_NOISE);
 }
 
 float Read_Humidity_HTS221(void) {
@@ -618,8 +634,12 @@ float Read_Humidity_HTS221(void) {
     hts221_humidity_raw_get(&hts221_ctx, &raw);
     hum = linear_interpolation(&lin_hum, raw);
 
-    if (hum < 0) hum = 0;
-    if (hum > 100) hum = 100;
+    if (hum < 0) {
+    	hum = 0;
+    }
+    if (hum > 100) {
+    	hum = 100;
+    }
 
     return hum;
 }

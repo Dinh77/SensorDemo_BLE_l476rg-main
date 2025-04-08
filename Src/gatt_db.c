@@ -93,7 +93,7 @@ tBleStatus Add_HWServW2ST_Service(void)
   uuid[14] |= 0x10; /* Pressure value*/
   BLUENRG_memcpy(&char_uuid.Char_UUID_128, uuid, 16);
   ret =  aci_gatt_add_char(HWServW2STHandle, UUID_TYPE_128, &char_uuid,
-                           2+2+4+2,  // 2 bytes time + 2 temp + 4 pressure + 2 humidity
+                           2+2+4+2,
                            CHAR_PROP_NOTIFY|CHAR_PROP_READ,
                            ATTR_PERMISSION_NONE,
                            GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
@@ -286,8 +286,8 @@ tBleStatus Environmental_Update(int32_t press, int16_t temp, int16_t hum)
   HOST_TO_LE_16(buff, 0);
 
   HOST_TO_LE_32(buff+2, press);   // pression
-  HOST_TO_LE_16(buff+6, temp);    // température
-  HOST_TO_LE_16(buff+8, hum);     // humidité
+  HOST_TO_LE_16(buff+6, hum);     // humidité
+  HOST_TO_LE_16(buff+8, temp);    // température
 
   ret = aci_gatt_update_char_value(HWServW2STHandle, EnvironmentalCharHandle,
                                    0, 10, buff);
