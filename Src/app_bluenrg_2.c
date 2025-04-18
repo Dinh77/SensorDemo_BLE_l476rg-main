@@ -362,8 +362,7 @@ uint8_t Sensor_DeviceInit(void)
  */
 static void User_Process(void)
 {
-  float data_t;
-  float data_p;
+
   static uint32_t counter = 0;
 
   /* Make the device discoverable */
@@ -398,7 +397,8 @@ static void User_Process(void)
       float temp = Read_Temperature_LPS22HH();
       float press = Read_Pressure_LPS22HH();
       float hum = Read_Humidity_HTS221();
-      printf("Température (°C): %.2f | Pression (hPa): %.2f | Humidité (%%): %.2f\r\n", temp, press, hum);
+      printf("temperature: %.2f\r\npressure: %.2f\r\nhumidity: %.2f\r\n", temp, press, hum);
+
 
       Environmental_Update((int32_t)(press * 100), (int16_t)(temp * 10), (int16_t)(hum * 10));
 

@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         0000dc18  08000190  08000190  00001190  2**4
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000664  0800dda8  0800dda8  0000eda8  2**3
+  2 .rodata       0000064c  0800dda8  0800dda8  0000eda8  2**3
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  0800e40c  0800e40c  000101ec  2**0
+  3 .ARM.extab    00000000  0800e3f4  0800e3f4  000101ec  2**0
                   CONTENTS
-  4 .ARM          00000008  0800e40c  0800e40c  0000f40c  2**2
+  4 .ARM          00000008  0800e3f4  0800e3f4  0000f3f4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  0800e414  0800e414  000101ec  2**0
+  5 .preinit_array 00000000  0800e3fc  0800e3fc  000101ec  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  0800e414  0800e414  0000f414  2**2
+  6 .init_array   00000004  0800e3fc  0800e3fc  0000f3fc  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  0800e418  0800e418  0000f418  2**2
+  7 .fini_array   00000004  0800e400  0800e400  0000f400  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         000001ec  20000000  0800e41c  00010000  2**2
+  8 .data         000001ec  20000000  0800e404  00010000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000009f4  200001ec  0800e608  000101ec  2**2
+  9 .bss          000009f4  200001ec  0800e5f0  000101ec  2**2
                   ALLOC
- 10 ._user_heap_stack 00000c00  20000be0  0800e608  00010be0  2**0
+ 10 ._user_heap_stack 00000c00  20000be0  0800e5f0  00010be0  2**0
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  000101ec  2**0
                   CONTENTS, READONLY
@@ -1364,7 +1364,7 @@ LoopForever:
   ldr r1, =_edata
  8000fb4:	200001ec 	.word	0x200001ec
   ldr r2, =_sidata
- 8000fb8:	0800e41c 	.word	0x0800e41c
+ 8000fb8:	0800e404 	.word	0x0800e404
   ldr r2, =_sbss
  8000fbc:	200001ec 	.word	0x200001ec
   ldr r4, =_ebss
@@ -1855,7 +1855,7 @@ static void User_Process(void)
       float hum = Read_Humidity_HTS221();
  800122e:	f001 fabd 	bl	80027ac <Read_Humidity_HTS221>
  8001232:	ed87 0a01 	vstr	s0, [r7, #4]
-      printf("Température (°C): %.2f | Pression (hPa): %.2f | Humidité (%%): %.2f\r\n", temp, press, hum);
+      printf("temperature: %.2f\r\npressure: %.2f\r\nhumidity: %.2f\r\n", temp, press, hum);
  8001236:	68f8      	ldr	r0, [r7, #12]
  8001238:	f7ff f986 	bl	8000548 <__aeabi_f2d>
  800123c:	4680      	mov	r8, r0
@@ -1874,6 +1874,7 @@ static void User_Process(void)
  800125e:	464b      	mov	r3, r9
  8001260:	4826      	ldr	r0, [pc, #152]	@ (80012fc <User_Process+0x114>)
  8001262:	f00a fe1b 	bl	800be9c <iprintf>
+
 
       Environmental_Update((int32_t)(press * 100), (int16_t)(temp * 10), (int16_t)(hum * 10));
  8001266:	edd7 7a02 	vldr	s15, [r7, #8]
@@ -6607,7 +6608,7 @@ void Set_DeviceConnectable(void)
  800381a:	3728      	adds	r7, #40	@ 0x28
  800381c:	46bd      	mov	sp, r7
  800381e:	bd80      	pop	{r7, pc}
- 8003820:	0800ddfc 	.word	0x0800ddfc
+ 8003820:	0800dde4 	.word	0x0800dde4
  8003824:	20000208 	.word	0x20000208
 
 08003828 <APP_UserEvtRx>:
@@ -6764,9 +6765,9 @@ void APP_UserEvtRx(void *pData)
  8003906:	3720      	adds	r7, #32
  8003908:	46bd      	mov	sp, r7
  800390a:	bd80      	pop	{r7, pc}
- 800390c:	0800de98 	.word	0x0800de98
- 8003910:	0800dee8 	.word	0x0800dee8
- 8003914:	0800de60 	.word	0x0800de60
+ 800390c:	0800de80 	.word	0x0800de80
+ 8003910:	0800ded0 	.word	0x0800ded0
+ 8003914:	0800de48 	.word	0x0800de48
 
 08003918 <HAL_MspInit>:
 /* USER CODE END 0 */
@@ -7718,7 +7719,7 @@ int32_t BSP_LED_Init(Led_TypeDef Led)
  8003d86:	46bd      	mov	sp, r7
  8003d88:	bd80      	pop	{r7, pc}
  8003d8a:	bf00      	nop
- 8003d8c:	0800de04 	.word	0x0800de04
+ 8003d8c:	0800ddec 	.word	0x0800ddec
 
 08003d90 <BSP_LED_On>:
  *              @arg  LED3
@@ -7928,11 +7929,11 @@ int32_t BSP_PB_Init(Button_TypeDef Button, ButtonMode_TypeDef ButtonMode)
  8003eb2:	3710      	adds	r7, #16
  8003eb4:	46bd      	mov	sp, r7
  8003eb6:	bd80      	pop	{r7, pc}
- 8003eb8:	0800de08 	.word	0x0800de08
+ 8003eb8:	0800ddf0 	.word	0x0800ddf0
  8003ebc:	2000000c 	.word	0x2000000c
- 8003ec0:	0800de0c 	.word	0x0800de0c
- 8003ec4:	0800de10 	.word	0x0800de10
- 8003ec8:	0800de14 	.word	0x0800de14
+ 8003ec0:	0800ddf4 	.word	0x0800ddf4
+ 8003ec4:	0800ddf8 	.word	0x0800ddf8
+ 8003ec8:	0800ddfc 	.word	0x0800ddfc
 
 08003ecc <BSP_PB_GetState>:
  *                This parameter can be one of the following values:
@@ -12868,7 +12869,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
  8005a9c:	e014      	b.n	8005ac8 <HAL_RCC_OscConfig+0x298>
  8005a9e:	bf00      	nop
  8005aa0:	40021000 	.word	0x40021000
- 8005aa4:	0800de18 	.word	0x0800de18
+ 8005aa4:	0800de00 	.word	0x0800de00
  8005aa8:	20000018 	.word	0x20000018
  8005aac:	2000001c 	.word	0x2000001c
  8005ab0:	4ba0      	ldr	r3, [pc, #640]	@ (8005d34 <HAL_RCC_OscConfig+0x504>)
@@ -14173,7 +14174,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  80061d2:	bd80      	pop	{r7, pc}
  80061d4:	40022000 	.word	0x40022000
  80061d8:	40021000 	.word	0x40021000
- 80061dc:	0800de18 	.word	0x0800de18
+ 80061dc:	0800de00 	.word	0x0800de00
  80061e0:	20000018 	.word	0x20000018
  80061e4:	2000001c 	.word	0x2000001c
 
@@ -14378,7 +14379,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
  80062ec:	4770      	bx	lr
  80062ee:	bf00      	nop
  80062f0:	40021000 	.word	0x40021000
- 80062f4:	0800de30 	.word	0x0800de30
+ 80062f4:	0800de18 	.word	0x0800de18
  80062f8:	00f42400 	.word	0x00f42400
  80062fc:	007a1200 	.word	0x007a1200
 
@@ -14427,7 +14428,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  8006338:	4618      	mov	r0, r3
  800633a:	bd80      	pop	{r7, pc}
  800633c:	40021000 	.word	0x40021000
- 8006340:	0800de28 	.word	0x0800de28
+ 8006340:	0800de10 	.word	0x0800de10
 
 08006344 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -14454,7 +14455,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  8006364:	4618      	mov	r0, r3
  8006366:	bd80      	pop	{r7, pc}
  8006368:	40021000 	.word	0x40021000
- 800636c:	0800de28 	.word	0x0800de28
+ 800636c:	0800de10 	.word	0x0800de10
 
 08006370 <RCC_SetFlashLatencyFromMSIRange>:
             voltage range.
@@ -28164,8 +28165,8 @@ int list_get_size (tListNode * listHead)
  800b3d4:	615a      	str	r2, [r3, #20]
  800b3d6:	bd38      	pop	{r3, r4, r5, pc}
  800b3d8:	20000030 	.word	0x20000030
- 800b3dc:	0800e040 	.word	0x0800e040
- 800b3e0:	0800e057 	.word	0x0800e057
+ 800b3dc:	0800e028 	.word	0x0800e028
+ 800b3e0:	0800e03f 	.word	0x0800e03f
  800b3e4:	abcd330e 	.word	0xabcd330e
  800b3e8:	e66d1234 	.word	0xe66d1234
  800b3ec:	0005deec 	.word	0x0005deec
@@ -28209,8 +28210,8 @@ int list_get_size (tListNode * listHead)
  800b446:	f020 4000 	bic.w	r0, r0, #2147483648	@ 0x80000000
  800b44a:	bd10      	pop	{r4, pc}
  800b44c:	20000030 	.word	0x20000030
- 800b450:	0800e040 	.word	0x0800e040
- 800b454:	0800e057 	.word	0x0800e057
+ 800b450:	0800e028 	.word	0x0800e028
+ 800b454:	0800e03f 	.word	0x0800e03f
  800b458:	abcd330e 	.word	0xabcd330e
  800b45c:	e66d1234 	.word	0xe66d1234
  800b460:	0005deec 	.word	0x0005deec
@@ -28638,11 +28639,11 @@ int list_get_size (tListNode * listHead)
  800b870:	e7ee      	b.n	800b850 <_printf_float+0x2a4>
  800b872:	bf00      	nop
  800b874:	7fefffff 	.word	0x7fefffff
- 800b878:	0800e0b3 	.word	0x0800e0b3
- 800b87c:	0800e0af 	.word	0x0800e0af
- 800b880:	0800e0bb 	.word	0x0800e0bb
- 800b884:	0800e0b7 	.word	0x0800e0b7
- 800b888:	0800e0bf 	.word	0x0800e0bf
+ 800b878:	0800e09b 	.word	0x0800e09b
+ 800b87c:	0800e097 	.word	0x0800e097
+ 800b880:	0800e0a3 	.word	0x0800e0a3
+ 800b884:	0800e09f 	.word	0x0800e09f
+ 800b888:	0800e0a7 	.word	0x0800e0a7
  800b88c:	6da3      	ldr	r3, [r4, #88]	@ 0x58
  800b88e:	f8dd a028 	ldr.w	sl, [sp, #40]	@ 0x28
  800b892:	4553      	cmp	r3, sl
@@ -29120,8 +29121,8 @@ int list_get_size (tListNode * listHead)
  800bd08:	2500      	movs	r5, #0
  800bd0a:	f104 0619 	add.w	r6, r4, #25
  800bd0e:	e7f5      	b.n	800bcfc <_printf_i+0x220>
- 800bd10:	0800e0c1 	.word	0x0800e0c1
- 800bd14:	0800e0d2 	.word	0x0800e0d2
+ 800bd10:	0800e0a9 	.word	0x0800e0a9
+ 800bd14:	0800e0ba 	.word	0x0800e0ba
 
 0800bd18 <std>:
  800bd18:	2300      	movs	r3, #0
@@ -29479,10 +29480,10 @@ int list_get_size (tListNode * listHead)
  800c02a:	4798      	blx	r3
  800c02c:	3601      	adds	r6, #1
  800c02e:	e7f2      	b.n	800c016 <__libc_init_array+0x1e>
- 800c030:	0800e414 	.word	0x0800e414
- 800c034:	0800e414 	.word	0x0800e414
- 800c038:	0800e414 	.word	0x0800e414
- 800c03c:	0800e418 	.word	0x0800e418
+ 800c030:	0800e3fc 	.word	0x0800e3fc
+ 800c034:	0800e3fc 	.word	0x0800e3fc
+ 800c038:	0800e3fc 	.word	0x0800e3fc
+ 800c03c:	0800e400 	.word	0x0800e400
 
 0800c040 <__retarget_lock_init_recursive>:
  800c040:	4770      	bx	lr
@@ -29528,9 +29529,9 @@ int list_get_size (tListNode * listHead)
  800c08c:	e7f3      	b.n	800c076 <__assert_func+0x12>
  800c08e:	bf00      	nop
  800c090:	20000030 	.word	0x20000030
- 800c094:	0800e0e3 	.word	0x0800e0e3
- 800c098:	0800e0f0 	.word	0x0800e0f0
- 800c09c:	0800e11e 	.word	0x0800e11e
+ 800c094:	0800e0cb 	.word	0x0800e0cb
+ 800c098:	0800e0d8 	.word	0x0800e0d8
+ 800c09c:	0800e106 	.word	0x0800e106
 
 0800c0a0 <quorem>:
  800c0a0:	e92d 4ff7 	stmdb	sp!, {r0, r1, r2, r4, r5, r6, r7, r8, r9, sl, fp, lr}
@@ -29915,15 +29916,15 @@ int list_get_size (tListNode * listHead)
  800c474:	3fc68a28 	.word	0x3fc68a28
  800c478:	509f79fb 	.word	0x509f79fb
  800c47c:	3fd34413 	.word	0x3fd34413
- 800c480:	0800e040 	.word	0x0800e040
- 800c484:	0800e12c 	.word	0x0800e12c
+ 800c480:	0800e028 	.word	0x0800e028
+ 800c484:	0800e114 	.word	0x0800e114
  800c488:	7ff00000 	.word	0x7ff00000
- 800c48c:	0800e0c0 	.word	0x0800e0c0
+ 800c48c:	0800e0a8 	.word	0x0800e0a8
  800c490:	3ff80000 	.word	0x3ff80000
- 800c494:	0800e240 	.word	0x0800e240
- 800c498:	0800e184 	.word	0x0800e184
- 800c49c:	0800e128 	.word	0x0800e128
- 800c4a0:	0800e0bf 	.word	0x0800e0bf
+ 800c494:	0800e228 	.word	0x0800e228
+ 800c498:	0800e16c 	.word	0x0800e16c
+ 800c49c:	0800e110 	.word	0x0800e110
+ 800c4a0:	0800e0a7 	.word	0x0800e0a7
  800c4a4:	f8d9 301c 	ldr.w	r3, [r9, #28]
  800c4a8:	6018      	str	r0, [r3, #0]
  800c4aa:	9b03      	ldr	r3, [sp, #12]
@@ -30152,8 +30153,8 @@ int list_get_size (tListNode * listHead)
  800c728:	e9cd 0104 	strd	r0, r1, [sp, #16]
  800c72c:	e7c4      	b.n	800c6b8 <_dtoa_r+0x508>
  800c72e:	bf00      	nop
- 800c730:	0800e240 	.word	0x0800e240
- 800c734:	0800e218 	.word	0x0800e218
+ 800c730:	0800e228 	.word	0x0800e228
+ 800c734:	0800e200 	.word	0x0800e200
  800c738:	3ff00000 	.word	0x3ff00000
  800c73c:	40240000 	.word	0x40240000
  800c740:	401c0000 	.word	0x401c0000
@@ -30782,8 +30783,8 @@ int list_get_size (tListNode * listHead)
  800cd40:	f000 f968 	bl	800d014 <__multadd>
  800cd44:	9002      	str	r0, [sp, #8]
  800cd46:	e7eb      	b.n	800cd20 <_dtoa_r+0xb70>
- 800cd48:	0800e184 	.word	0x0800e184
- 800cd4c:	0800e11f 	.word	0x0800e11f
+ 800cd48:	0800e16c 	.word	0x0800e16c
+ 800cd4c:	0800e107 	.word	0x0800e107
 
 0800cd50 <_free_r>:
  800cd50:	b538      	push	{r3, r4, r5, lr}
@@ -31067,8 +31068,8 @@ int list_get_size (tListNode * listHead)
  800cfc0:	e9c0 3303 	strd	r3, r3, [r0, #12]
  800cfc4:	e7f7      	b.n	800cfb6 <_Balloc+0x66>
  800cfc6:	bf00      	nop
- 800cfc8:	0800e040 	.word	0x0800e040
- 800cfcc:	0800e195 	.word	0x0800e195
+ 800cfc8:	0800e028 	.word	0x0800e028
+ 800cfcc:	0800e17d 	.word	0x0800e17d
 
 0800cfd0 <_Bfree>:
  800cfd0:	b570      	push	{r4, r5, r6, lr}
@@ -31096,8 +31097,8 @@ int list_get_size (tListNode * listHead)
  800d004:	6021      	str	r1, [r4, #0]
  800d006:	f843 4022 	str.w	r4, [r3, r2, lsl #2]
  800d00a:	bd70      	pop	{r4, r5, r6, pc}
- 800d00c:	0800e040 	.word	0x0800e040
- 800d010:	0800e195 	.word	0x0800e195
+ 800d00c:	0800e028 	.word	0x0800e028
+ 800d010:	0800e17d 	.word	0x0800e17d
 
 0800d014 <__multadd>:
  800d014:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
@@ -31151,8 +31152,8 @@ int list_get_size (tListNode * listHead)
  800d090:	6125      	str	r5, [r4, #16]
  800d092:	4620      	mov	r0, r4
  800d094:	e8bd 81f0 	ldmia.w	sp!, {r4, r5, r6, r7, r8, pc}
- 800d098:	0800e184 	.word	0x0800e184
- 800d09c:	0800e195 	.word	0x0800e195
+ 800d098:	0800e16c 	.word	0x0800e16c
+ 800d09c:	0800e17d 	.word	0x0800e17d
 
 0800d0a0 <__hi0bits>:
  800d0a0:	f5b0 3f80 	cmp.w	r0, #65536	@ 0x10000
@@ -31242,8 +31243,8 @@ int list_get_size (tListNode * listHead)
  800d156:	6103      	str	r3, [r0, #16]
  800d158:	bd10      	pop	{r4, pc}
  800d15a:	bf00      	nop
- 800d15c:	0800e184 	.word	0x0800e184
- 800d160:	0800e195 	.word	0x0800e195
+ 800d15c:	0800e16c 	.word	0x0800e16c
+ 800d160:	0800e17d 	.word	0x0800e17d
 
 0800d164 <__multiply>:
  800d164:	e92d 4ff0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, fp, lr}
@@ -31362,8 +31363,8 @@ int list_get_size (tListNode * listHead)
  800d29a:	e79f      	b.n	800d1dc <__multiply+0x78>
  800d29c:	3e01      	subs	r6, #1
  800d29e:	e7a1      	b.n	800d1e4 <__multiply+0x80>
- 800d2a0:	0800e184 	.word	0x0800e184
- 800d2a4:	0800e195 	.word	0x0800e195
+ 800d2a0:	0800e16c 	.word	0x0800e16c
+ 800d2a4:	0800e17d 	.word	0x0800e17d
 
 0800d2a8 <__pow5mult>:
  800d2a8:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
@@ -31431,9 +31432,9 @@ int list_get_size (tListNode * listHead)
  800d348:	4630      	mov	r0, r6
  800d34a:	e8bd 83f8 	ldmia.w	sp!, {r3, r4, r5, r6, r7, r8, r9, pc}
  800d34e:	bf00      	nop
- 800d350:	0800e20c 	.word	0x0800e20c
- 800d354:	0800e040 	.word	0x0800e040
- 800d358:	0800e195 	.word	0x0800e195
+ 800d350:	0800e1f4 	.word	0x0800e1f4
+ 800d354:	0800e028 	.word	0x0800e028
+ 800d358:	0800e17d 	.word	0x0800e17d
 
 0800d35c <__lshift>:
  800d35c:	e92d 47f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
@@ -31512,8 +31513,8 @@ int list_get_size (tListNode * listHead)
  800d426:	d8f9      	bhi.n	800d41c <__lshift+0xc0>
  800d428:	e7ea      	b.n	800d400 <__lshift+0xa4>
  800d42a:	bf00      	nop
- 800d42c:	0800e184 	.word	0x0800e184
- 800d430:	0800e195 	.word	0x0800e195
+ 800d42c:	0800e16c 	.word	0x0800e16c
+ 800d430:	0800e17d 	.word	0x0800e17d
 
 0800d434 <__mcmp>:
  800d434:	690a      	ldr	r2, [r1, #16]
@@ -31649,8 +31650,8 @@ int list_get_size (tListNode * listHead)
  800d586:	3f01      	subs	r7, #1
  800d588:	e7e7      	b.n	800d55a <__mdiff+0xee>
  800d58a:	bf00      	nop
- 800d58c:	0800e184 	.word	0x0800e184
- 800d590:	0800e195 	.word	0x0800e195
+ 800d58c:	0800e16c 	.word	0x0800e16c
+ 800d590:	0800e17d 	.word	0x0800e17d
 
 0800d594 <__d2b>:
  800d594:	e92d 43f7 	stmdb	sp!, {r0, r1, r2, r4, r5, r6, r7, r8, r9, lr}
@@ -31716,8 +31717,8 @@ int list_get_size (tListNode * listHead)
  800d632:	f7ff fd35 	bl	800d0a0 <__hi0bits>
  800d636:	ebc0 1042 	rsb	r0, r0, r2, lsl #5
  800d63a:	e7e5      	b.n	800d608 <__d2b+0x74>
- 800d63c:	0800e184 	.word	0x0800e184
- 800d640:	0800e195 	.word	0x0800e195
+ 800d63c:	0800e16c 	.word	0x0800e16c
+ 800d640:	0800e17d 	.word	0x0800e17d
 
 0800d644 <__sfputc_r>:
  800d644:	6893      	ldr	r3, [r2, #8]
@@ -31983,11 +31984,11 @@ int list_get_size (tListNode * listHead)
  800d8ac:	4630      	mov	r0, r6
  800d8ae:	f7fe f915 	bl	800badc <_printf_i>
  800d8b2:	e7e4      	b.n	800d87e <_vfiprintf_r+0x1e6>
- 800d8b4:	0800e1ee 	.word	0x0800e1ee
- 800d8b8:	0800e1f8 	.word	0x0800e1f8
+ 800d8b4:	0800e1d6 	.word	0x0800e1d6
+ 800d8b8:	0800e1e0 	.word	0x0800e1e0
  800d8bc:	0800b5ad 	.word	0x0800b5ad
  800d8c0:	0800d673 	.word	0x0800d673
- 800d8c4:	0800e1f4 	.word	0x0800e1f4
+ 800d8c4:	0800e1dc 	.word	0x0800e1dc
 
 0800d8c8 <__sflush_r>:
  800d8c8:	f9b1 200c 	ldrsh.w	r2, [r1, #12]
